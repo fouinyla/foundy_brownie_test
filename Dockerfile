@@ -1,13 +1,10 @@
-FROM python:3.9
+FROM python:3.10.5
 
 # Set up code directory
 WORKDIR /usr/src/app
 
 # Install linux dependencies
-RUN apt-get update && apt-get install -y libssl-dev
-
-RUN apt-get update && apt-get install -y \
-    npm
+RUN apt-get update && apt-get install --fix-missing -y libssl-dev npm
 
 # Install app dependencies
 COPY ./requirements.txt /usr/src/app/requirements.txt

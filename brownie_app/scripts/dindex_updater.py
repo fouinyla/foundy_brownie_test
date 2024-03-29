@@ -10,15 +10,15 @@ def main():
 
     # 1.Calculate index
     index_assets_config = [
-        {'ticker': 'UNI', 'address': '0xb33EaAd8d922B1083446DC23f610c2567fB5180f', 'amount': None, 'price': None, 'total_price': None},
-        {'ticker': '1INCH', 'address': '0x9c2C5fd7b07E95EE044DDeba0E97a665F142394f', 'amount': None, 'price': None, 'total_price': None},
-        {'ticker': 'KNC', 'address': '0x1C954E8fe737F99f68Fa1CCda3e51ebDB291948C', 'amount': None, 'price': None, 'total_price': None}
+        {'ticker': 'MATIC', 'address': '0x0000000000000000000000000000000000000000', 'amount': 1, 'price': None, 'total_price': None},
+        {'ticker': 'NIFTSY', 'address': '0x432cdbC749FD96AA35e1dC27765b23fDCc8F5cf1', 'amount': 1, 'price': None, 'total_price': None},
     ]
     index_calculator = IndexCalculator(
         price_provider=config['price_provider'].get('url'),
         index_assets_config=index_assets_config,
-        wnft_contract_address='0x347d5125a7b5b8c14400bfc8d8230014b9cd3033',
-        wnft_id=7,
+        wnft_contract_address='0x0bfede1f408164884e3cc90a30587e55f3147ba9',
+        # wnft_contract_address='0xFb453ebA20Dc4598bb77A22747B0BCc971B5630B',
+        wnft_id=2,
         saft_wrapper_address='0x018Ab23bae3eD9Ec598B1239f37B998fEDB75af3',
     )
 
@@ -51,3 +51,25 @@ def main():
     print(f'Update transaction: {update_transaction}')
 
 
+
+
+# (
+#     ((0, '0x0000000000000000000000000000000000000000'), 0, 0), 
+#     (
+#         (
+#             (1, '0x0000000000000000000000000000000000000000'), 0, 1000000000000000000
+#         ), 
+#         (
+#             (2, '0x432cdbC749FD96AA35e1dC27765b23fDCc8F5cf1'), 0, 1000000000000000000
+#         )
+#     ), 
+#     '0x0000000000000000000000000000000000000000', 
+#     (
+#         (0x00, 1, '0x0000000000000000000000000000000000000000'),
+#     ), 
+#     (), 
+#     (
+#         ('0xD2f4D892fb7615989A73667aA8B477a2BFCfa6C9', 10000),
+#     ), 
+#     0x0000
+# )

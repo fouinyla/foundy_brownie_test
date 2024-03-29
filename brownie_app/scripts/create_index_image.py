@@ -34,7 +34,7 @@ def _generate_text_from_config(final_index_config: list) -> str:
     """
     index_price = 0
     for token in final_index_config:
-        index_price += token['total_price']
+        index_price += token['total_price'] or 0
 
     start_price = _get_index_start_price()
 
@@ -44,19 +44,23 @@ def _generate_text_from_config(final_index_config: list) -> str:
     price_change_percentage = ((index_price - start_price) / start_price) * 100
     price_change_str = f"+{price_change_percentage:.2f}" if price_change_percentage >= 0 else f"-{price_change_percentage:.2f}"
 
+    print("index_price", index_price)
+    print("start_price", start_price)
+    print("price_change_str", price_change_str)
+    print("final_index_config", final_index_config)
+
     text = f"""
     DAO Envelop (NIFTSY)
 
     DeFi Index for Polygon №1
-    Index Elements: UNI, 1INCH, KNC
+    Index Elements: MATIC, NIFTSY
 
     The price on the index now: {index_price:.3f} USD
     The start price of the index: {start_price:.2f} USD
     Change since start: {price_change_str}%
 
-    UNI price: ${final_index_config[0]['price']:.2f} USD
-    1INCH price: ${final_index_config[1]['price']:.2f} USD
-    KNC price: ${final_index_config[2]['price']:.2f} USD
+    MATIC price: ${final_index_config[0]['price']:.2f} USD
+    NIFTSY price: ${final_index_config[1]['price']:.2f} USD
     """
     return text
 
@@ -88,7 +92,7 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
     draw = ImageDraw.Draw(overlay)
 
     # Choose a font
-    font = ImageFont.truetype("scripts/WorkSans-ExtraBold.ttf", 25)
+    font = ImageFont.truetype("../scripts/WorkSans-ExtraBold.ttf", 25)
 
     # Set the position of the text
     text_x = 0

@@ -70,7 +70,7 @@ class IndexCalculator:
         for token in index_assets_config:
             ticker = token['ticker']
             token_price_in_usd: Union[int, str] = self._fetch_price(ticker)
-            token['price'] = token_price_in_usd
+            token['price'] = token_price_in_usd or 0
         return index_assets_config
 
     def _get_index_amount(self) -> dict:
@@ -90,6 +90,7 @@ class IndexCalculator:
             self.wnft_contract_address,
             self.wnft_id
         )
+        print("WNFT", wnft)
         collateral: list = wnft[1]
         for token in collateral:
             token_address = token[0][1]
@@ -112,10 +113,14 @@ class IndexCalculator:
         Returns:
             dict: The final configuration with the total price for each asset included in the index.
         """
+        print("INdex amount", index_amount)
         for token in index_assets_config_with_price:
+            print("TOKEN", token)
             token_amount = index_amount[token['address']]
             token['amount'] = token_amount
             token_price_in_usd_per_unit = token['price']
+            if not token_price_in_usd_per_unit:
+                continue
             total_price = token_amount * token_price_in_usd_per_unit
             token['total_price'] = total_price
         return index_assets_config_with_price
