@@ -1,0 +1,40 @@
+compiler:
+    solc:
+        remappings:
+          - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.8.3"
+          - "@openzeppelin-old=OpenZeppelin/openzeppelin-contracts@4.8.3"
+          - "@envelop-protocol-v1=dao-envelop/envelop-protocol-v1@1.2.0"
+          - "@envelop-subscription=dao-envelop/subscription@2.0.0"
+dependencies:
+    - OpenZeppelin/openzeppelin-contracts@4.8.3
+    - dao-envelop/envelop-protocol-v1@1.2.0
+    - dao-envelop/subscription@2.0.0
+networks:
+  polygon-main:
+    verify: True
+    host: ${POLYGON_PROD_RPC}
+    explorer: https://api.polygonscan.com/api
+  sepolia:
+    verify: True
+    host: ${SEPOLIA_RPC}
+  mumbai:
+    verify: True
+    host: ${POLYGON_MUMBAI_RPC}
+    explorer: https://mumbai.polygonscan.com/api
+
+wallets:
+  worker:
+    from_key: ${PRIVATE_KEY}
+
+ipfs:
+  api_url: ${PINATA_IPFS_API_URL}
+  gateway_url: ${PINATA_GATEWAY_URL}
+  api_key: ${PINATA_IPFS_TOKEN}
+
+price_provider:
+  url: ${CM_URL}
+  api_key: ${CM_API_KEY}
+
+image_generator:
+  api_key: ${OPEN_AI_TOKEN}
+  prompt: ${IMAGE_PROMPT}
