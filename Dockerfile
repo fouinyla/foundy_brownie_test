@@ -1,10 +1,12 @@
-FROM python:3.10.5
+FROM --platform=linux/arm64 python:3.10
 
 # Set up code directory
 WORKDIR /usr/src/app
 
 # Install linux dependencies
 RUN apt-get update && apt-get install --fix-missing -y libssl-dev npm
+
+RUN npm install -g solc
 
 # Install app dependencies
 COPY ./requirements.txt /usr/src/app/requirements.txt
