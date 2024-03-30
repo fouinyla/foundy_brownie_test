@@ -92,7 +92,7 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
     draw = ImageDraw.Draw(overlay)
 
     # Choose a font
-    font = ImageFont.truetype("../scripts/WorkSans-ExtraBold.ttf", 25)
+    # font = ImageFont.truetype("WorkSans-Regular.ttf", 25)
 
     # Set the position of the text
     text_x = 0
@@ -109,7 +109,7 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
     )
 
     # Add text to the new image
-    draw.text((text_x, text_y), text, font=font, fill="white")
+    draw.text((text_x, text_y), text, fill="white")
 
     # Blend the new image with the original image
     img = Image.alpha_composite(img, overlay)
