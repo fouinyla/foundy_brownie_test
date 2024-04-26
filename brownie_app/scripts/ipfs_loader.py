@@ -77,9 +77,9 @@ class IPFSLoader:
         image_cid: str = self.pin_file(file_path=image_path)['IpfsHash']
 
         metadata: dict = {
-            'name': 'DINDEX',
-            'description': 'Dynamic Index NFT',
-            'image': f'{self.GATEWAY_URL}/{image_cid}?filename={image_name}'
+            'name': 'FINDEX',
+            'description': 'Foundy Dynamic Index NFT',
+            'image': f'{self.GATEWAY_URL}/ipfs/{image_cid}'
         }
         metadata_file_name: str = 'metadata.json'
         metadata_file_path: str = get_file_path(metadata_file_name)
@@ -89,4 +89,4 @@ class IPFSLoader:
             file_.write(metadata_json)
 
         metadata_cid: str = self.pin_file(file_path=metadata_file_path)['IpfsHash']
-        return f'{self.GATEWAY_URL}/{metadata_cid}?filename={metadata_file_name}'
+        return f'{self.GATEWAY_URL}/ipfs/{metadata_cid}'

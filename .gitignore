@@ -57,7 +57,7 @@ cmd
 .vscode/
 
 # Exclude images
-**/*.png
+# **/*.png
 
 # Exclude metadata.json
 metadata.json

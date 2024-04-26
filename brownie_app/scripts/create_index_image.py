@@ -1,9 +1,8 @@
 import os
 
 from PIL import Image, ImageDraw, ImageFont
-from scripts.helpful_scripts import get_file_path
 
-FILES_DIRECTORY: str = os.getenv('FILES_DIRECTORY')
+from .helpful_scripts import get_file_path
 
 
 def _get_index_start_price() -> int:
@@ -23,7 +22,7 @@ def _generate_text_from_config(final_index_config: list) -> str:
     """
     Generates a text summary of the DeFi index configuration including price changes.
 
-    Processes a list of tokens within the index, computing the total index price and its 
+    Processes a list of tokens within the index, computing the total index price and its
     percentage change from the start price.
 
     Args:
@@ -42,27 +41,35 @@ def _generate_text_from_config(final_index_config: list) -> str:
 
     # Calculate percentage change
     price_change_percentage = ((index_price - start_price) / start_price) * 100
-    price_change_str = f"+{price_change_percentage:.2f}" if price_change_percentage >= 0 else f"-{price_change_percentage:.2f}"
+    price_change_str = (
+        f"+{price_change_percentage:.2f}" if price_change_percentage >= 0 else f"-{price_change_percentage:.2f}"
+    )
 
     print("index_price", index_price)
     print("start_price", start_price)
     print("price_change_str", price_change_str)
     print("final_index_config", final_index_config)
 
-    text = f"""
-    DAO Envelop (NIFTSY)
+    # text = f"""
+    # DAO Envelop (NIFTSY)
 
-    DeFi Index for Polygon №1
-    Index Elements: MATIC, NIFTSY
+    # DeFi Index for Polygon №1
+    # Index Elements: MATIC, NIFTSY
 
-    The price on the index now: {index_price:.3f} USD
-    The start price of the index: {start_price:.2f} USD
-    Change since start: {price_change_str}%
+    # The price on the index now: {index_price:.3f} USD
+    # The start price of the index: {start_price:.2f} USD
+    # Change since start: {price_change_str}%
+    # """
 
-    MATIC price: ${final_index_config[0]['price']:.2f} USD
-    NIFTSY price: ${final_index_config[1]['price']:.2f} USD
-    """
+    text = f"${index_price:.2f}"
     return text
+
+
+def get_text_metrics(font: ImageFont, text: str) -> dict[str, int]:
+    _, descent = font.getmetrics()
+    metrics = font.getmask(text=text).getbbox()
+    
+    return dict(width=metrics[2], height=metrics[3] + descent)
 
 
 def get_generated_index_image_name(image_name: str, final_index_config: dict) -> str:
@@ -92,24 +99,42 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
     draw = ImageDraw.Draw(overlay)
 
     # Choose a font
-    # font = ImageFont.truetype("WorkSans-Regular.ttf", 25)
+    font = ImageFont.truetype(get_file_path("fonts/space_grotesk.ttf"), 150)
+    print("VARIATIONS", font.get_variation_names())
+
+    text_metrics: dict[str, int] = get_text_metrics(font=font, text=text)
+
+    font.set_variation_by_name(font.get_variation_names()[3])
 
     # Set the position of the text
-    text_x = 0
-    text_y = 100
-
-    # Set the width and height of the block
-    block_width = 550
-    block_height = 380
-
-    # Draw a semi-transparent rectangle on the new image
-    draw.rectangle(
-        [text_x, text_y, text_x + block_width, text_y + block_height],
-        fill=(128, 128, 128, 120)  # Grey color with transparency
-    )
+    text_x = img.width / 2 - text_metrics["width"] / 2
+    text_y = 3 * img.height / 4 - text_metrics["height"] / 2
 
     # Add text to the new image
-    draw.text((text_x, text_y), text, fill="white")
+    draw.text((text_x, text_y), text, fill="black", font=font)
+
+    font = ImageFont.truetype(get_file_path("fonts/space_grotesk.ttf"), 100)
+    font.set_variation_by_name(font.get_variation_names()[2])
+
+    text = "+88$"
+    text_metrics: dict[str, int] = get_text_metrics(font=font, text=text)
+    text = "+88%"
+
+    left_shape_x = (232, 911)
+    left_shape_y = (2740, 2963)
+    right_shape_x = (1248, 1927)
+    right_shape_y = (2740, 2963)
+
+    percent_text_x = left_shape_x[0] + ((left_shape_x[1] - left_shape_x[0]) / 2) - text_metrics["width"] / 2
+    percent_text_y = left_shape_y[0] + ((left_shape_y[1] - left_shape_y[0]) / 2) - text_metrics["height"] / 2
+    draw.text((percent_text_x, percent_text_y), text, fill=(14, 245, 157, 255), font=font)
+
+    text = "+886$"
+    text_metrics: dict[str, int] = get_text_metrics(font=font, text=text)
+
+    percent_text_x = right_shape_x[0] + ((right_shape_x[1] - right_shape_x[0]) / 2) - text_metrics["width"] / 2
+    percent_text_y = right_shape_y[0] + ((right_shape_y[1] - right_shape_y[0]) / 2) - text_metrics["height"] / 2
+    draw.text((percent_text_x, percent_text_y), text, fill=(14, 245, 157, 255), font=font)
 
     # Blend the new image with the original image
     img = Image.alpha_composite(img, overlay)

@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DINDEX is ERC721URIStorage, Ownable {
+contract FINDEX is ERC721URIStorage, Ownable {
     uint256 public tokenCounter;
 
-    constructor () ERC721 ("Dynamic Index", "DINDEX"){
+    constructor () ERC721 ("Foundy Dynamic Index", "FINDEX"){
         tokenCounter = 0;
     }
 

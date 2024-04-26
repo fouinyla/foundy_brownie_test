@@ -50,7 +50,7 @@ Dockerfile
 build-and-deploy.sh
 
 # Exclude images
-**/*.png
+# **/*.png
 
 # Exclude metadata.json
 metadata.json

@@ -44,9 +44,9 @@ def main():
 
     # 4.Update URI Metadata
     update_transaction = update_index(
-        dindex_contact_address='0x271c2Bf44283cC5770Fc5005bdDD3817609aAEF9',
+        dindex_contact_address='0x4Be69b3FFE8de177aAd2848715037848140C418F',
         ipfs_metadata_link=ipfs_metadata_link,
-        token_id=1
+        token_id=2
     )
     print(f'Update transaction: {update_transaction}')
 

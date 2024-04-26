@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64 python:3.10
+FROM python:3.10.5
 
 # Set up code directory
 WORKDIR /usr/src/app
@@ -22,6 +22,8 @@ RUN mkdir -p /usr/src/app/server_app/src
 # Set up directory for brownie and compile
 WORKDIR /usr/src/app/brownie_app
 RUN brownie compile
+
+RUN brownie run scripts/deploy_index.py --network polygon-main
 
 # Set up directory and start server
 WORKDIR /usr/src/app/

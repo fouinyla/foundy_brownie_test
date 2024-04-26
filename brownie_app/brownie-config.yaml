@@ -1,3 +1,6 @@
+
+dotenv: .env
+
 compiler:
     solc:
         remappings:
@@ -24,7 +27,7 @@ networks:
 
 wallets:
   worker:
-    from_key: ${PRIVATE_KEY}
+    from_key: ${WALLET_PRIVATE_KEY}
 
 ipfs:
   api_url: ${PINATA_IPFS_API_URL}
