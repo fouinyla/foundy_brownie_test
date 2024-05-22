@@ -1,6 +1,4 @@
 
-dotenv: .env
-
 compiler:
     solc:
         remappings:
@@ -24,6 +22,10 @@ networks:
     verify: True
     host: ${POLYGON_MUMBAI_RPC}
     explorer: https://mumbai.polygonscan.com/api
+  bsc-main:
+    verify: True
+    host: ${BINANCE_PROD_PRC}
+    explorer: https://api.bscscan.com/api
 
 wallets:
   worker:

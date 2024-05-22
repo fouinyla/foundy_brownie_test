@@ -16,9 +16,13 @@ def main():
     index_calculator = IndexCalculator(
         price_provider=config['price_provider'].get('url'),
         index_assets_config=index_assets_config,
+        # current
         wnft_contract_address='0x0bfede1f408164884e3cc90a30587e55f3147ba9',
-        # wnft_contract_address='0xFb453ebA20Dc4598bb77A22747B0BCc971B5630B',
         wnft_id=2,
+
+        # wnft_contract_address='0x0bfede1f408164884e3cc90a30587e55f3147ba9',
+        # wnft_id=3,
+        # wnft_contract_address='0xFb453ebA20Dc4598bb77A22747B0BCc971B5630B',
         saft_wrapper_address='0x018Ab23bae3eD9Ec598B1239f37B998fEDB75af3',
     )
 
@@ -45,8 +49,9 @@ def main():
     # 4.Update URI Metadata
     update_transaction = update_index(
         dindex_contact_address='0x4Be69b3FFE8de177aAd2848715037848140C418F',
+        # dindex_contact_address='0x0457c7395793f5Dd0B339e3AA975E11877eA4ecf',
         ipfs_metadata_link=ipfs_metadata_link,
-        token_id=2
+        token_id=1
     )
     print(f'Update transaction: {update_transaction}')
 

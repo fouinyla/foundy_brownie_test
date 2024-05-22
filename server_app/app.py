@@ -4,7 +4,7 @@ import logging
 
 from fastapi import Depends, FastAPI
 
-from .dependencies import verify_api_key
+# from dependencies import verify_api_key
 
 
 logging.basicConfig(level=logging.INFO)
@@ -20,7 +20,7 @@ def read_root():
 
 @app.post(
     path="/update_meta",
-    dependencies=[Depends(verify_api_key)],
+    # dependencies=[Depends(verify_api_key)],
 )
 def update_meta():
     current_dir = path.abspath(curdir)
@@ -29,6 +29,7 @@ def update_meta():
 
     result = subprocess.run(
         ['brownie', 'run', 'scripts/dindex_updater.py', '--network', 'polygon-main'],
+        # ['brownie', 'run', 'scripts/dindex_updater.py', '--network', 'bsc-main'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,

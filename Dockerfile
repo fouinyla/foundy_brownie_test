@@ -20,11 +20,4 @@ RUN mkdir -p /usr/src/app/server_app/src
 
 
 # Set up directory for brownie and compile
-WORKDIR /usr/src/app/brownie_app
 RUN brownie compile
-
-RUN brownie run scripts/deploy_index.py --network polygon-main
-
-# Set up directory and start server
-WORKDIR /usr/src/app/
-CMD ["sh", "-c", "uvicorn server_app.app:app --host 0.0.0.0 --port 8000"]

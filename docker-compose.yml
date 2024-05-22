@@ -1,0 +1,28 @@
+services:
+  app:
+    image: brownie-app
+    container_name: brownie_app
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - ${BACKEND_EXPOSE_PORT}:8000
+    
+    command: /bin/bash -c \
+      "brownie run scripts/deploy_index.py --network polygon-main && \
+      python server_app/main.py"
+    
+    env_file:
+      - .env
+    
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - brownie_app_network
+
+networks:
+  brownie_app_network:
+    driver: bridge
+    name: brownie_app_network

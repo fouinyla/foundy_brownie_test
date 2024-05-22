@@ -64,3 +64,7 @@ metadata.json
 
 # poetry
 poetry.lock
+
+# brownie
+build
+reports

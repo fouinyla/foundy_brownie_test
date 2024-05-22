@@ -1,12 +1,14 @@
 import os
 
 from brownie import accounts, config, network
+from brownie.network import priority_fee
 
 FORKED_LOCAL_ENVIRENMENTS = ['mainnet-fork', 'mainnet-fork-dev', 'mumbai-fork-dev', 'polygon-fork-dev']
 LOCAL_BLOCKCHAIN_ENVIRENMENTS = ['development', 'ganache-local']
 
 
 def get_account(account_label='main'):
+    priority_fee("35 gwei")
     if(
         network.show_active() in LOCAL_BLOCKCHAIN_ENVIRENMENTS
         or network.show_active() in FORKED_LOCAL_ENVIRENMENTS

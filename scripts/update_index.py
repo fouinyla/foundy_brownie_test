@@ -15,4 +15,3 @@ def update_index(dindex_contact_address: str, ipfs_metadata_link: str, token_id:
         {"from": account}
     )
     tx.wait(1)
-    return tx 

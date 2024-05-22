@@ -79,7 +79,8 @@ class IPFSLoader:
         metadata: dict = {
             'name': 'FINDEX',
             'description': 'Foundy Dynamic Index NFT',
-            'image': f'{self.GATEWAY_URL}/ipfs/{image_cid}'
+            # 'image': f'{self.GATEWAY_URL}/ipfs/{image_cid}'
+            'image': "https://abradevstorage.blob.core.windows.net/nfts/FC10up.png?sp=r&st=2024-05-20T16:09:29Z&se=2025-05-20T00:09:29Z&spr=https&sv=2022-11-02&sr=b&sig=JKDvGioUIKkPBs%2F0Zk1f3FTvQMX228ViW5L4T2jC0Lo%3D"
         }
         metadata_file_name: str = 'metadata.json'
         metadata_file_path: str = get_file_path(metadata_file_name)
