@@ -35,4 +35,4 @@ def get_generated_image_name(prompt: str) -> str:
     # new_image_path: str = get_file_path(new_image_name)
     # image.save(new_image_path)
 
-    return "foundy_up.png"
+    return "FC10_base.png"

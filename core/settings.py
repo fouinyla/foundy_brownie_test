@@ -51,3 +51,12 @@ class PinataSettings:
 
 
 pinataSettings = PinataSettings()
+
+
+class AzureSettings:
+    CONNECTION_STRING: str = getenv("CONNECTION_STRING")
+    CONTAINER_NAME: str = getenv("CONTAINER_NAME")
+    BLOB_NAME: str = getenv("BLOB_NAME")
+
+
+azureSettings = AzureSettings()

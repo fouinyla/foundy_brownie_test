@@ -43,7 +43,7 @@ class IPFSLoader:
         response_json = response.json()
         return response_json
 
-    def pin_json(self, string: str) -> dict:
+    def pin_json(self, payload: dict) -> dict:
         """
         Pins JSON data to IPFS by sending it as a POST request to the IPFS API endpoint.
 
@@ -54,7 +54,7 @@ class IPFSLoader:
             dict: The response from the IPFS API as a JSON object, typically containing the IPFS hash.
         """
         method: str = 'pinning/pinJSONToIPFS'
-        payload = { "pinataContent": string}
+        # payload = { "pinataContent": string}
         self.headers["content-type"] = "application/json"
         response = requests.post((f'{self.API_BASE_URL}/{method}'), json=payload, headers=self.headers)
         response_json = response.json()
@@ -74,20 +74,22 @@ class IPFSLoader:
         Returns:
             str: The URL to the pinned metadata on the IPFS gateway.
         """
-        image_cid: str = self.pin_file(file_path=image_path)['IpfsHash']
+        # image_cid: str = self.pin_file(file_path=image_path)['IpfsHash']
 
         metadata: dict = {
             'name': 'FINDEX',
             'description': 'Foundy Dynamic Index NFT',
             # 'image': f'{self.GATEWAY_URL}/ipfs/{image_cid}'
-            'image': "https://abradevstorage.blob.core.windows.net/nfts/FC10up.png?sp=r&st=2024-05-20T16:09:29Z&se=2025-05-20T00:09:29Z&spr=https&sv=2022-11-02&sr=b&sig=JKDvGioUIKkPBs%2F0Zk1f3FTvQMX228ViW5L4T2jC0Lo%3D"
+            'image': "https://foundycapital.blob.core.windows.net/nfts/FC10.png"
         }
-        metadata_file_name: str = 'metadata.json'
-        metadata_file_path: str = get_file_path(metadata_file_name)
+        # metadata_file_name: str = 'metadata.json'
+        # metadata_file_path: str = get_file_path(metadata_file_name)
 
-        with open(metadata_file_path, 'w', encoding='utf8') as file_:
-            metadata_json = json.dumps(metadata)
-            file_.write(metadata_json)
+        # with open(metadata_file_path, 'w', encoding='utf8') as file_:
+        #     metadata_json = json.dumps(metadata)
+        #     file_.write(metadata_json)
 
-        metadata_cid: str = self.pin_file(file_path=metadata_file_path)['IpfsHash']
+        metadata_str: str = json.dumps(metadata, separators=(",", ":"))
+        print("metadata_str", metadata_str)
+        metadata_cid: str = self.pin_json(payload=metadata)['IpfsHash']
         return f'{self.GATEWAY_URL}/ipfs/{metadata_cid}'

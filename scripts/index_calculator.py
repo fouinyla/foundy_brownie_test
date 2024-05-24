@@ -84,6 +84,7 @@ class IndexCalculator:
             dict: A dictionary mapping token addresses to their respective amounts in the index.
         """
         token_decimal = 1e18
+        wbtc_decimal = 1e8
         index_amount = {}
         saft_wraper_contract = TrustedWrapperV2.at(self.saft_wrapper_address)
         wnft = saft_wraper_contract.getWrappedToken(
@@ -95,7 +96,8 @@ class IndexCalculator:
         for token in collateral:
             token_address = token[0][1]
             token_amount = token[2]
-            index_amount[token_address] = token_amount / token_decimal
+            index_amount[token_address] = token_amount / (wbtc_decimal if token_address == "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6" else token_decimal)
+            print("TOKEN ADDRESS", token_address)
 
         return index_amount
 

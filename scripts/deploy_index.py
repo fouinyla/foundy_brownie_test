@@ -15,9 +15,6 @@ def deploy_dynamic_index():
     )
 
     print(f'Contract {dynamic_index._name} deployed to: {dynamic_index.address}')
-    sleep(seconds=10)
-    with open("deployed_address.txt", "w") as f:
-        f.write(dynamic_index.address)
     return dynamic_index
 
 
@@ -39,5 +36,8 @@ def main():
     # dynamic_index = deploy_dynamic_index()
     # verify_deployed_contract(contract_address=dynamic_index.address)
     # cc = create_collectible(contract_address=dynamic_index.address)
+
+    # verify_deployed_contract(contract_address="0x979Ee4b9ed42B01D4Eaf07c65C604272104CbA2C")
+    # cc = create_collectible(contract_address="0x979Ee4b9ed42B01D4Eaf07c65C604272104CbA2C")
     pass
     

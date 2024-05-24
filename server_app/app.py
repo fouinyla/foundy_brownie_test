@@ -24,7 +24,7 @@ def read_root():
 )
 def update_meta():
     current_dir = path.abspath(curdir)
-    brownie_app_dir: str = f'{current_dir}/brownie_app'
+    brownie_app_dir: str = f'{current_dir}'
     logger.info(f'Brownie app dir - {brownie_app_dir}')
 
     result = subprocess.run(

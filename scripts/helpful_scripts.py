@@ -39,5 +39,5 @@ def get_file_path(file_name: str) -> str:
     #     replaced_cur_dir = current_dir.replace('brownie_app', os.getenv("FILES_DIRECTORY"))
     #     return f'{replaced_cur_dir}/{file_name}'
 
-    return f'../static/{file_name}'
+    return f'static/{file_name}'
 

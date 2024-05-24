@@ -23,6 +23,9 @@ eth-brownie = "^1.20.2"
 openai = "^1.14.3"
 uvicorn = "0.23.2"
 python-dotenv = "0.16.0"
+pydantic = "^2.7.1"
+azure-storage-blob = "^12.20.0"
+azure-identity = "^1.16.0"
 
 
 [build-system]

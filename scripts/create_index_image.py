@@ -1,8 +1,10 @@
 import os
 
 from PIL import Image, ImageDraw, ImageFont
+from azure.storage.blob import BlobClient
 
 from .helpful_scripts import get_file_path
+from core.settings import azureSettings
 
 
 def _get_index_start_price() -> int:
@@ -14,11 +16,11 @@ def _get_index_start_price() -> int:
     Returns:
         int: The hardcoded start price of the index.
     """
-    HARDCODED_VALUE: int = 0.50  # Price in USD on date - 11.10.2023
+    HARDCODED_VALUE: int = 25
     return HARDCODED_VALUE
 
 
-def _generate_text_from_config(final_index_config: list) -> str:
+def _generate_text_from_config(final_index_config: list) -> dict:
     """
     Generates a text summary of the DeFi index configuration including price changes.
 
@@ -31,38 +33,21 @@ def _generate_text_from_config(final_index_config: list) -> str:
     Returns:
         str: A string containing formatted information about the DeFi index.
     """
-    index_price = 0
-    for token in final_index_config:
-        index_price += token['total_price'] or 0
+    index_price = sum(token['total_price'] for token in final_index_config)
 
     start_price = _get_index_start_price()
 
     print(f'Index price: {index_price}')
 
     # Calculate percentage change
-    price_change_percentage = ((index_price - start_price) / start_price) * 100
-    price_change_str = (
-        f"+{price_change_percentage:.2f}" if price_change_percentage >= 0 else f"-{price_change_percentage:.2f}"
+    percentage = ((index_price - start_price) / start_price) * 100
+    profit = index_price - start_price
+
+    return dict(
+        current_price=f"${index_price:.2f}",
+        profit=f"${profit:.2f}",
+        percentage=f"{percentage:.2f}%",
     )
-
-    print("index_price", index_price)
-    print("start_price", start_price)
-    print("price_change_str", price_change_str)
-    print("final_index_config", final_index_config)
-
-    # text = f"""
-    # DAO Envelop (NIFTSY)
-
-    # DeFi Index for Polygon №1
-    # Index Elements: MATIC, NIFTSY
-
-    # The price on the index now: {index_price:.3f} USD
-    # The start price of the index: {start_price:.2f} USD
-    # Change since start: {price_change_str}%
-    # """
-
-    text = f"${index_price:.2f}"
-    return text
 
 
 def get_text_metrics(font: ImageFont, text: str) -> dict[str, int]:
@@ -70,6 +55,17 @@ def get_text_metrics(font: ImageFont, text: str) -> dict[str, int]:
     metrics = font.getmask(text=text).getbbox()
     
     return dict(width=metrics[2], height=metrics[3] + descent)
+
+
+def load_to_blob(image_file: str) -> None:
+    blob_client = BlobClient.from_connection_string(
+        conn_str=azureSettings.CONNECTION_STRING,
+        container_name=azureSettings.CONTAINER_NAME,
+        blob_name=azureSettings.BLOB_NAME,
+    )
+
+    with open("static/FC10.png", "rb") as f:
+        blob_client.upload_blob(f, overwrite=True)
 
 
 def get_generated_index_image_name(image_name: str, final_index_config: dict) -> str:
@@ -88,7 +84,7 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
         str: The name of the new image.
     """
 
-    text: str = _generate_text_from_config(final_index_config)
+    info: dict = _generate_text_from_config(final_index_config)
     image_path: str = get_file_path(image_name)
     img = Image.open(image_path).convert("RGBA")  # Convert image to RGBA mode
 
@@ -100,8 +96,8 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
 
     # Choose a font
     font = ImageFont.truetype(get_file_path("fonts/space_grotesk.ttf"), 150)
-    print("VARIATIONS", font.get_variation_names())
 
+    text = info["current_price"]
     text_metrics: dict[str, int] = get_text_metrics(font=font, text=text)
 
     font.set_variation_by_name(font.get_variation_names()[3])
@@ -118,7 +114,7 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
 
     text = "+88$"
     text_metrics: dict[str, int] = get_text_metrics(font=font, text=text)
-    text = "+88%"
+    text = info["percentage"]
 
     left_shape_x = (232, 911)
     left_shape_y = (2740, 2963)
@@ -129,7 +125,7 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
     percent_text_y = left_shape_y[0] + ((left_shape_y[1] - left_shape_y[0]) / 2) - text_metrics["height"] / 2
     draw.text((percent_text_x, percent_text_y), text, fill=(14, 245, 157, 255), font=font)
 
-    text = "+886$"
+    text = info["profit"]
     text_metrics: dict[str, int] = get_text_metrics(font=font, text=text)
 
     percent_text_x = right_shape_x[0] + ((right_shape_x[1] - right_shape_x[0]) / 2) - text_metrics["width"] / 2
@@ -140,7 +136,12 @@ def get_generated_index_image_name(image_name: str, final_index_config: dict) ->
     img = Image.alpha_composite(img, overlay)
 
     # Save the image
-    new_image_name: str = f'index-{image_name}'
+    new_image_name: str = f'FC10.png'
     new_image_path: str = get_file_path(new_image_name)
-    img.save(new_image_path)
+    
+    img = img.convert("P", palette=Image.ADAPTIVE, colors=256)
+    img.save(new_image_path, optimize=True)
+
+    load_to_blob(image_file=new_image_path)
+
     return new_image_path, new_image_name
